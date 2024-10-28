@@ -11,7 +11,7 @@ A versatile Pokémon information retrieval application featuring a FastAPI backe
     - [HTML Web Interface](#html-web-interface)
 4. [Usage](#usage)
 5. [Contributing](#contributing)
-6. [License](#license)
+6. [Acknowledgments](#acknowledgments)
 
 ## Features
 - Retrieve detailed information about Pokémon, including their abilities, height, weight, and base experience.
