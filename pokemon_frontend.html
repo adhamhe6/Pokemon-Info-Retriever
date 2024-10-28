@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Info</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .info {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #e6fffa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .error {
+            color: red;
+            text-align: center; /* Center text */
+        }
+        .loading {
+            font-style: italic;
+            text-align: center; /* Center text */
+        }
+        .initial-message {
+            font-size: 18px;
+            color: #6c757d; /* Bootstrap secondary color */
+            text-align: center; /* Center text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Pokémon Information</h2>
+        <div class="form-group">
+            <input type="text" id="pokemonName" class="form-control" placeholder="Enter Pokémon name" />
+        </div>
+        <button class="btn btn-primary btn-block" onclick="getPokemonInfo()">Get Info</button>
+        <div id="result" class="result">
+            <p class="initial-message">Enter a Pokémon name above to get its information!</p>
+        </div>
+        <div id="info" class="info">
+            <h5>About Pokémon</h5>
+            <p>Pokémon, short for "Pocket Monsters," are creatures of various shapes and sizes that inhabit the Pokémon world. Trainers capture and train Pokémon to battle each other for sport. The franchise began with video games and has expanded into trading card games, animated series, movies, and more.</p>
+            <p>Each Pokémon has its unique abilities, strengths, and weaknesses, adding depth to battles and strategy. With over 800 Pokémon species, the Pokémon universe is vast and continuously growing.</p>
+            <p>Whether you’re a casual player or a competitive trainer, there’s always something new to discover in the world of Pokémon!</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        async function getPokemonInfo() {
+            const pokemonName = document.getElementById("pokemonName").value.trim();
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "<p class='loading'>Loading Pokémon info...</p>"; // Show loading message
+
+            if (!pokemonName) {
+                resultDiv.innerHTML = "<p class='error'>Please enter a Pokémon name.</p>";
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/pokemon/${pokemonName}`);
+                if (!response.ok) {
+                    throw new Error("Pokémon not found");
+                }
+
+                const data = await response.json();
+                displayPokemonInfo(data);
+            } catch (error) {
+                resultDiv.innerHTML = `<p class='error'>${error.message}</p>`;
+            }
+        }
+
+        function displayPokemonInfo(data) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `
+                <h4 class="text-center">${data.name}</h4>
+                <p><strong>ID:</strong> ${data.id}</p>
+                <p><strong>Height:</strong> ${data.height}</p>
+                <p><strong>Weight:</strong> ${data.weight}</p>
+                <p><strong>Base Experience:</strong> ${data.base_experience}</p>
+                <p><strong>Abilities:</strong> ${data.abilities.join(", ")}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
