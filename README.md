@@ -1,4 +1,4 @@
-# Pokémon Info Retrieval
+# Pokémon Info Retriever
 
 A versatile Pokémon information retrieval application featuring a FastAPI backend, a Python desktop GUI, and an HTML web interface for accessing data from PokeAPI.
 
